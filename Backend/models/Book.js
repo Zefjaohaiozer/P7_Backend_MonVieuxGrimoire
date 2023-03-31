@@ -1,8 +1,9 @@
 const { json } = require('express');
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const ratingSchema = mongoose.Schema({
-	userId: { type: String, required: true },
+	userId: { type: String, required: true, unique: true },
 	grade: { type: Number, required: true },
 });
 
