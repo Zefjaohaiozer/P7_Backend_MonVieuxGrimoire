@@ -7,13 +7,13 @@ const path = require('path');
 const app = express();
 const userRoutes = require('./routes/users');
 const bookRoute = require('./routes/books');
-
+const credentials = require('./identifiants/identifiants');
 module.exports = app;
 
 app.use((req, res, next) => {
 	mongoose
 		.connect(
-			'mongodb+srv://Zefjaohaiozer:ArthurAdminMongo@cluster0.3dfkmq8.mongodb.net/test?retryWrites=true&w=majority',
+			`mongodb+srv://${credentials.id}:${credentials.pwd}@cluster0.3dfkmq8.mongodb.net/test?retryWrites=true&w=majority`,
 			{ useNewUrlParser: true, useUnifiedTopology: true }
 		)
 		.then(() => console.log('Connexion à MongoDB réussie !'))
