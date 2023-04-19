@@ -41,7 +41,7 @@ function BookItem({ book, size }) {
     </Link>
   );
 }
-
+/* eslint-disable */
 BookItem.propTypes = {
   size: PropTypes.number.isRequired,
   book: PropTypes.shape({
@@ -61,4 +61,5 @@ BookItem.propTypes = {
     averageRating: PropTypes.number,
   }).isRequired,
 };
+/* eslint-enable */
 export default BookItem;

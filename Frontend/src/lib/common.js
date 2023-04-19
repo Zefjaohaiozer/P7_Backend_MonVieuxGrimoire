@@ -96,7 +96,7 @@ export async function rateBook(id, userId, rating) {
     userId,
     rating: parseInt(rating, 10),
   };
-
+  /* eslint-disable */
   try {
     const response = await axios.post(
       `${API_ROUTES.BOOKS}/${id}/rating`,
@@ -107,6 +107,7 @@ export async function rateBook(id, userId, rating) {
         },
       }
     );
+    /* eslint-enable */
     const book = response.data;
     // eslint-disable-next-line no-underscore-dangle
     book.id = book._id;
