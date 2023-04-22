@@ -4,7 +4,7 @@ const Book = require('../models/Book');
 
 exports.addNewBook = (req, res, next) => {
   const bookObject = JSON.parse(req.body.book);
-
+  console.log(req.body);
   const book = new Book({
     ...bookObject,
 
@@ -85,7 +85,7 @@ exports.rateBook = (req, res, next) => {
   const bookFilter = { _id: urlId };
   const updatedUserId = req.body.userId;
   const updatedGrade = req.body.rating;
-
+  console.log(req.body);
   const updatedData = {
     userId: updatedUserId,
     grade: updatedGrade,
