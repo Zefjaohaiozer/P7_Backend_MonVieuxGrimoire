@@ -79,7 +79,7 @@ exports.bookBestRating = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-exports.rateBook = async (req, res, next) => {
+exports.rateBook = (req, res, next) => {
   const url = req.url;
   const urlId = url.split('/')[1];
   const bookFilter = { _id: urlId };
@@ -91,32 +91,23 @@ exports.rateBook = async (req, res, next) => {
     grade: updatedGrade,
   };
 
-  try {
-    const book = await Book.findOne(bookFilter);
-    if (!book) {
-      return res.status(404).json({ message: 'Livre Introuvable' });
-    }
+  Book.findOneAndUpdate(
+    bookFilter,
+    { $push: { ratings: updatedData } },
+    { new: true }
+  )
+    .then((updatedBook) => {
+      const totalRatings = updatedBook.ratings.length;
+      const ratingsSum = updatedBook.ratings.reduce(
+        (acc, rating) => acc + rating.grade,
+        0
+      );
+      updatedBook.averageRating = ratingsSum / totalRatings;
 
-    const existingRating = book.ratings.find(
-      (rating) => rating.userId === updatedUserId
-    );
-    if (existingRating) {
-      return res.status(400).json({
-        message: 'Vous avez déjà noté ce livre',
-      });
-    }
-
-    book.ratings.push(updatedData);
-    const totalRatings = book.ratings.length;
-    const ratingsSum = book.ratings.reduce(
-      (acc, rating) => acc + rating.grade,
-      0
-    );
-    book.averageRating = ratingsSum / totalRatings;
-
-    const updatedBook = await book.save();
-    res.status(200).json(updatedBook);
-  } catch (error) {
-    res.status(400).json({ error });
-  }
+      return updatedBook.save();
+    })
+    .then((book) => {
+      res.status(200).json(book);
+    })
+    .catch((error) => res.status(400).json({ error }));
 };
