@@ -89,7 +89,6 @@ exports.rateBook = (req, res, next) => {
   const updatedData = {
     userId: updatedUserId,
     grade: updatedGrade,
-    bookId: bookFilter,
   };
 
   Book.findOneAndUpdate(
